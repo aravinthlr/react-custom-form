@@ -1,153 +1,107 @@
 import React from 'react'
 import { render } from 'react-dom'
-//import Styles from './Styles'
+import Styles from './Styles'
 import { Form, Field } from 'react-final-form'
+import createDecorator from 'final-form-focus';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-const onSubmit = async values => {
-  await sleep(300)
+const required = value => (value ? undefined : "Required");
+const focusOnError = createDecorator();
+const onSubmit =  values => {
   window.alert(JSON.stringify(values, 0, 2))
 }
 
 const App = () => (
     <Form
-      onSubmit={onSubmit}
-      initialValues={{ stooge: 'larry', employed: false }}
-      render={({ handleSubmit, form, submitting, pristine, values }) => (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>First Name</label>
-            <Field
-              name="firstName"
-              component="input"
-              type="text"
-              placeholder="First Name"
-            />
-          </div>
-          <div>
-            <label>Last Name</label>
-            <Field
-              name="lastName"
-              component="input"
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
-          <div>
-            <label>Employed</label>
-            <Field name="employed" component="input" type="checkbox" />
-          </div>
-          <div>
-            <label>Favorite Color</label>
-            <Field name="favoriteColor" component="select">
-              <option />
-              <option value="#ff0000">❤️ Red</option>
-              <option value="#00ff00">💚 Green</option>
-              <option value="#0000ff">💙 Blue</option>
-            </Field>
-          </div>
-          <div>
-            <label>Toppings</label>
-            <Field name="toppings" component="select" multiple>
-              <option value="chicken">🐓 Chicken</option>
-              <option value="ham">🐷 Ham</option>
-              <option value="mushrooms">🍄 Mushrooms</option>
-              <option value="cheese">🧀 Cheese</option>
-              <option value="tuna">🐟 Tuna</option>
-              <option value="pineapple">🍍 Pineapple</option>
-            </Field>
-          </div>
-          <div>
-            <label>Sauces</label>
-            <div>
-              <label>
-                <Field
-                  name="sauces"
-                  component="input"
-                  type="checkbox"
-                  value="ketchup"
-                />{' '}
-                Ketchup
-              </label>
-              <label>
-                <Field
-                  name="sauces"
-                  component="input"
-                  type="checkbox"
-                  value="mustard"
-                />{' '}
-                Mustard
-              </label>
-              <label>
-                <Field
-                  name="sauces"
-                  component="input"
-                  type="checkbox"
-                  value="mayonnaise"
-                />{' '}
-                Mayonnaise
-              </label>
-              <label>
-                <Field
-                  name="sauces"
-                  component="input"
-                  type="checkbox"
-                  value="guacamole"
-                />{' '}
-                Guacamole 🥑
-              </label>
+      onSubmit={onSubmit} subscription = {{values: true}} decorators={[focusOnError]}
+      render={(formState) => (
+        <form onSubmit={formState.handleSubmit}>
+        <Field name="Name" validate={required}>
+          {(fieldState) => (
+            <div className={fieldState.meta.active ? 'active': ''}>
+              <label>First Name</label>
+              <input {...fieldState.input} type="text" placeholder="Name"/>
+              {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
+              <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
             </div>
-          </div>
-          <div>
-            <label>Best Stooge</label>
+          )}
+        </Field>
+        <Field name="Age" validate={required}>
+          {(fieldState) => (
             <div>
-              <label>
-                <Field
-                  name="stooge"
-                  component="input"
-                  type="radio"
-                  value="larry"
-                />{' '}
-                Larry
-              </label>
-              <label>
-                <Field
-                  name="stooge"
-                  component="input"
-                  type="radio"
-                  value="moe"
-                />{' '}
-                Moe
-              </label>
-              <label>
-                <Field
-                  name="stooge"
-                  component="input"
-                  type="radio"
-                  value="curly"
-                />{' '}
-                Curly
-              </label>
+              <label>Age</label>
+              <input {...fieldState.input} type="number" placeholder="Age"/>
+              {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
+              <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
             </div>
-          </div>
-          <div>
-            <label>Notes</label>
-            <Field name="notes" component="textarea" placeholder="Notes" />
-          </div>
+          )}
+        </Field>
+
+            <Field name="employed" >
+            {(fieldState) => (
+              <div>
+                <label>employed</label>
+                <input {...fieldState.input} type="checkbox"/>
+                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
+              </div>
+            )}</Field>
+            <Field name="Department" >
+            {(fieldState) => (
+              <div>
+                <label>Department</label>
+                <select {...fieldState.input}>
+                <option />
+                <option value="Engineering">Engineering</option>
+                <option value="Human Resource Management">Human Resource Management</option>
+                <option value="Accounting and Finance">Accounting and Finance</option>
+                </select>
+                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
+              </div>
+            )}</Field>
+            <Field name="Documents" >
+            {(fieldState) => (
+              <div>
+                <label>Documents</label>
+                <select {...fieldState.input} multiple>
+                <option />
+                <option value="HSC">HSC</option>
+                <option value="DC">DC</option>
+                </select>
+                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
+              </div>
+            )}</Field>
+            <Field name="Notes" >{(fieldState) => (
+              <div>
+                <label>Notes</label>
+                <input {...fieldState.input} type="textarea"/>
+                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
+              </div>
+            )}</Field>
+            <Field name="Experiance" value=">3">{(fieldState) => (
+              <div>
+                <input type="radio" {...fieldState.input}/>less than 3 years
+              </div>
+            )}</Field>
+            <Field name="Experiance" value=">5">{(fieldState) => (
+              <div>
+                <input type="radio" {...fieldState.input}/>less than 5 years
+              </div>)}</Field>
+              <Field name="Experiance" value=">7">{(fieldState) => (
+                <div>
+                  <input type="radio" {...fieldState.input}/>less than 7 years
+                </div>)}</Field>
           <div className="buttons">
-            <button type="submit" disabled={submitting || pristine}>
+            <button type="submit" disabled={formState.submitting || formState.pristine}>
               Submit
             </button>
             <button
               type="button"
-              onClick={form.reset}
-              disabled={submitting || pristine}
+              onClick={formState.form.reset}
+              disabled={formState.submitting || formState.pristine}
             >
               Reset
             </button>
           </div>
-          <pre>{JSON.stringify(values, 0, 2)}</pre>
+          <pre>{JSON.stringify(formState, 0, 2)}</pre>
         </form>
       )}
     />
