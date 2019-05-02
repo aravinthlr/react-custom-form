@@ -11,17 +11,20 @@ const onSubmit =  values => {
 }
 
 const App = () => (
+  <Styles>
+    <h1>React Final Form Component</h1>
+    <h3>TextField</h3>
     <Form
       onSubmit={onSubmit} subscription = {{values: true}} decorators={[focusOnError]}
       render={(formState) => (
         <form onSubmit={formState.handleSubmit}>
+        
         <Field name="Name" validate={required}>
           {(fieldState) => (
             <div className={fieldState.meta.active ? 'active': ''}>
-              <label>First Name</label>
+              <label>Name</label>
               <input {...fieldState.input} type="text" placeholder="Name"/>
               {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
-              <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
             </div>
           )}
         </Field>
@@ -31,19 +34,10 @@ const App = () => (
               <label>Age</label>
               <input {...fieldState.input} type="number" placeholder="Age"/>
               {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
-              <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
             </div>
           )}
         </Field>
 
-            <Field name="employed" >
-            {(fieldState) => (
-              <div>
-                <label>employed</label>
-                <input {...fieldState.input} type="checkbox"/>
-                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
-              </div>
-            )}</Field>
             <Field name="Department" >
             {(fieldState) => (
               <div>
@@ -54,7 +48,6 @@ const App = () => (
                 <option value="Human Resource Management">Human Resource Management</option>
                 <option value="Accounting and Finance">Accounting and Finance</option>
                 </select>
-                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
               </div>
             )}</Field>
             <Field name="Documents" >
@@ -66,29 +59,47 @@ const App = () => (
                 <option value="HSC">HSC</option>
                 <option value="DC">DC</option>
                 </select>
-                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
               </div>
             )}</Field>
             <Field name="Notes" >{(fieldState) => (
               <div>
                 <label>Notes</label>
                 <input {...fieldState.input} type="textarea"/>
-                <pre>{JSON.stringify(fieldState, 0, 2)}</pre>
               </div>
             )}</Field>
-            <Field name="Experiance" value=">3">{(fieldState) => (
-              <div>
-                <input type="radio" {...fieldState.input}/>less than 3 years
+            <div>
+              <label>
+                <Field
+                  name="Experiance"
+                  component="input"
+                  type="radio"
+                  value=">3"
+                />{' '}
+                less than 3 years
+              </label>
               </div>
-            )}</Field>
-            <Field name="Experiance" value=">5">{(fieldState) => (
+            <div>
+            <label>
+                <Field
+                  name="Experiance"
+                  component="input"
+                  type="radio"
+                  value=">5"
+                />{' '}
+                less than 5 years
+              </label>
+              </div>
               <div>
-                <input type="radio" {...fieldState.input}/>less than 5 years
-              </div>)}</Field>
-              <Field name="Experiance" value=">7">{(fieldState) => (
-                <div>
-                  <input type="radio" {...fieldState.input}/>less than 7 years
-                </div>)}</Field>
+              <label>
+                <Field
+                  name="Experiance"
+                  component="input"
+                  type="radio"
+                  value=">7"
+                />{' '}
+                less than 7 years
+              </label>
+              </div>
           <div className="buttons">
             <button type="submit" disabled={formState.submitting || formState.pristine}>
               Submit
@@ -101,10 +112,10 @@ const App = () => (
               Reset
             </button>
           </div>
-          <pre>{JSON.stringify(formState, 0, 2)}</pre>
         </form>
       )}
     />
+    </Styles>
 )
 
 render(<App />, document.getElementById("root"));
