@@ -5,6 +5,7 @@
   "dependencies": {
     "final-form": "^4.12.0",
     "final-form-focus": "^1.1.2",
+    "format-string-by-pattern": "^1.1.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",

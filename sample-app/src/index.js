@@ -3,9 +3,11 @@ import { render } from 'react-dom'
 import Styles from './Styles'
 import { Form, Field } from 'react-final-form'
 import createDecorator from 'final-form-focus';
+import formatString from "format-string-by-pattern";
 
 const required = value => (value ? undefined : "Required");
 const minValue = value => (parseInt(value) >= 10 ? undefined : "Min Value is 10");
+const handleBlur = (val, prevVal) => console.log(val, prevVal);
 const focusOnError = createDecorator();
 const onSubmit =  values => {
   window.alert(JSON.stringify(values, 0, 2))
@@ -50,14 +52,36 @@ const App = () => (
             </div>
           )}
         </Field>
-        <Field name="textBoxOnBlur" formatOnBlur ?: true >
+        <Field name="textfieldwithtooltip" validate={minValue}>
           {(fieldState) => (
             <div className={fieldState.meta.active ? 'active': ''}>
-              <h3 className="width200px">Input box on blur</h3>
-              <input {...fieldState.input} type="text" placeholder="type something"/>
+              <h3 className="width200px">Text field with tooltip</h3>
+              <input {...fieldState.input} type="number" placeholder="type something" title={fieldState.input.value}/>
+              {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
             </div>
           )}
         </Field>
+        <Field name="textBoxOnBlur">
+          {(fieldState) => (
+            <div className={fieldState.meta.active ? 'active': ''}>
+              <h3 className="width200px">Input box on blur</h3>
+              <input {...fieldState.input} type="text" placeholder="type something"  onBlur={() => alert("Blur event triggered")}/>
+            </div>
+          )}
+        </Field>
+        <Field
+                name="fieldname"
+                parse={formatString("999-999-9999")}
+
+              >
+                {(fieldState) => (
+                  <div className={fieldState.meta.active ? 'active': ''}>
+                    <h3 className="width200px">Formatted field(999-999-999)</h3>
+                    <input {...fieldState.input} type="text" placeholder= "999-999-9999"/>
+                    {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
+                  </div>
+                )}
+            </Field>
         </form>
       )}
     />
