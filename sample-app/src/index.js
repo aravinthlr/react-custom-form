@@ -10,6 +10,11 @@ const onSubmit =  values => {
   window.alert(JSON.stringify(values, 0, 2))
 }
 
+//const composeValidators = (...validators) => value =>		
+  //validators.reduce((error, validator) => error || validator(value), undefined);
+
+  //validate={composeValidators(required, mustBeNumber, minValue(18))}
+
 const App = () => (
   <Styles>
     <h1>React Final Form Component</h1>
