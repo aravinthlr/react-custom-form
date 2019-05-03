@@ -5,12 +5,13 @@ import { Form, Field } from 'react-final-form'
 import createDecorator from 'final-form-focus';
 
 const required = value => (value ? undefined : "Required");
+const minValue = value => (parseInt(value) >= 10 ? undefined : "Min Value is 10");
 const focusOnError = createDecorator();
 const onSubmit =  values => {
   window.alert(JSON.stringify(values, 0, 2))
 }
 
-//const composeValidators = (...validators) => value =>		
+//const composeValidators = (...validators) => value =>
   //validators.reduce((error, validator) => error || validator(value), undefined);
 
   //validate={composeValidators(required, mustBeNumber, minValue(18))}
@@ -18,12 +19,54 @@ const onSubmit =  values => {
 const App = () => (
   <Styles>
     <h1>React Final Form Component</h1>
-    <h3>TextField</h3>
-    <Form
+    <h2>TextField</h2>
+
+    <Form name="TextField" onSubmit={onSubmit} render={(formState) => (
+        <form>
+        <Field name="Name">
+          {(fieldState) => (
+            <div>
+              <h3 className="width200px">Basic Text Field</h3>
+              <input {...fieldState.input} type="text" placeholder="type something"/>
+              {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
+            </div>
+          )}
+        </Field>
+        <Field name="RequiredName" validate={required}>
+          {(fieldState) => (
+            <div className={fieldState.meta.active ? 'active': ''}>
+              <h3 className="width200px">Required Text Field</h3>
+              <input {...fieldState.input} type="text" placeholder="type something"/>
+              {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
+            </div>
+          )}
+        </Field>
+        <Field name="CustomErrorMessage" validate={minValue}>
+          {(fieldState) => (
+            <div className={fieldState.meta.active ? 'active': ''}>
+              <h3 className="width200px">Custom Error Message Field</h3>
+              <input {...fieldState.input} type="number" placeholder="type something"/>
+              {fieldState.meta.error && fieldState.meta.touched && <span>{fieldState.meta.error}</span>}
+            </div>
+          )}
+        </Field>
+        <Field name="textBoxOnBlur" formatOnBlur ?: true >
+          {(fieldState) => (
+            <div className={fieldState.meta.active ? 'active': ''}>
+              <h3 className="width200px">Input box on blur</h3>
+              <input {...fieldState.input} type="text" placeholder="type something"/>
+            </div>
+          )}
+        </Field>
+        </form>
+      )}
+    />
+
+    <Form name="EmployeeDetails"
       onSubmit={onSubmit} subscription = {{values: true}} decorators={[focusOnError]}
       render={(formState) => (
         <form onSubmit={formState.handleSubmit}>
-        
+
         <Field name="Name" validate={required}>
           {(fieldState) => (
             <div className={fieldState.meta.active ? 'active': ''}>
